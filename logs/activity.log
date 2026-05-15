@@ -1,0 +1,24 @@
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [ALERT] Suspicious mass file modification detected!
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:50:13 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:50:13 [MODIFIED] protected/file1.txt
+2026-05-15 23:50:19 [DELETED] protected/test.txt
