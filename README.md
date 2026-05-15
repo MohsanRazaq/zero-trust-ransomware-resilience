@@ -1,1 +1,4 @@
-# Zero Trust Ransomware Resilience\n\nMini cybersecurity project demonstrating ransomware detection, backup restoration, and Zero Trust concepts.
+# Zero Trust Ransomware Resilience
+
+
+Mini cybersecurity project demonstrating real-time filesystem monitoring, behavioral ransomware detection, and backup resilience using Python.

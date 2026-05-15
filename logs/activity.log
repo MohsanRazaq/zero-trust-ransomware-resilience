@@ -1,0 +1,61 @@
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [ALERT] Suspicious mass file modification detected!
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:49:53 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:49:53 [MODIFIED] protected/file1.txt
+2026-05-15 23:50:13 [BACKUP]-->protected/file1.txt-->backup/file1.txt
+2026-05-15 23:50:13 [MODIFIED] protected/file1.txt
+2026-05-15 23:50:19 [DELETED] protected/test.txt
+2026-05-16 01:58:21 [BACKUP]protected/file1.txt->backup/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 Attack Detected....Locking down Folder protected
+2026-05-16 01:58:21 [SUCCESS] Directory successfully placed into Read-Only mode.
+2026-05-16 01:58:21 [ALERT] Suspicious mass file modification detected!
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 01:58:21 [MODIFIED] protected/file1.txt
+2026-05-16 02:08:43 [SECURITY] Unauthorized unlock attempt! Access denied.
+2026-05-16 02:09:42 [SECURITY] Unauthorized unlock attempt! Access denied.
+2026-05-16 02:11:17 [INFO] Verified authorization passphrase. Restoring access to 'protected'...
+2026-05-16 02:11:17 [SUCCESS] Folder successfully unlocked and open for operations.
+2026-05-16 02:20:09 [BACKUP] protected/file1.txt -> backup/file1.txt
+2026-05-16 02:20:09 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 Attack Detected....Locking down Folder protected
+2026-05-16 02:20:10 [SUCCESS] Directory successfully placed into Read-Only mode.
+2026-05-16 02:20:10 [ALERT] Suspicious mass file modification detected!
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:10 [MODIFIED] protected/file1.txt
+2026-05-16 02:20:59 [INFO] Verified authorization passphrase. Restoring access to 'protected'...
+2026-05-16 02:20:59 [SUCCESS] Folder successfully unlocked and open for operations.
+
+2026-05-16 02:25:05 [INFO] Verified authorization passphrase. Restoring access to 'protected'...
+2026-05-16 02:25:05 [SUCCESS] Folder successfully unlocked and open for operations.
