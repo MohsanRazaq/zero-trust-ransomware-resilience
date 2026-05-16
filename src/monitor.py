@@ -60,6 +60,56 @@ def write_log(message):
         f.write(log_message + "\n")
 
 
+#==============================================================
+def lock_access(folder_path):
+
+    write_log(f"[LOCKDOWN] Securing {folder_path}")
+
+    try:
+
+        # Make folder read-only
+        os.chmod(folder_path, 0o555)
+
+        # Make every file read-only
+        for filename in os.listdir(folder_path):
+
+            file_path = os.path.join(folder_path, filename)
+
+            if os.path.isfile(file_path):
+
+                os.chmod(file_path, 0o444)
+
+        write_log(f"[SUCCESS] {folder_path} is now protected")
+
+    except Exception as e:
+
+        write_log(f"[ERROR] {e}")
+        
+
+
+def unlock_access(folder_path):
+
+    write_log(f"[RECOVERY] Unlocking {folder_path}")
+
+    try:
+
+        os.chmod(folder_path, 0o755)
+
+        for filename in os.listdir(folder_path):
+
+            file_path = os.path.join(folder_path, filename)
+
+            if os.path.isfile(file_path):
+
+                os.chmod(file_path, 0o644)
+
+        write_log(f"[SUCCESS] {folder_path} unlocked")
+
+    except Exception as e:
+
+        write_log(f"[ERROR] {e}")
+
+
 # ============================================================
 # Detection State Storage
 # ============================================================
@@ -114,18 +164,15 @@ def detect_suspicious_activity(folder_path):
 
     current_time = time.time()
 
-    # Remove timestamps older than 10 seconds
     while recent_modifications and current_time - recent_modifications[0] > 10:
 
         recent_modifications.popleft()
 
-    # Trigger alert if excessive modifications detected
     if len(recent_modifications) > 5:
 
-        # Cooldown suppression prevents alert flooding
         if current_time - last_alert_time > 10:
 
-        
+            lock_access(folder_path)
 
             write_log("[ALERT] Suspicious mass file modification detected!")
 
@@ -231,7 +278,9 @@ try:
 except KeyboardInterrupt:
 
     print("\n[INFO] Monitoring paused by user.")
-
+    choice=input('Enter Key: ').strip().lower()
+    if choice=='mohsan':
+        unlock_access(path)
 
 
 observer.join()
