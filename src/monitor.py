@@ -1,6 +1,6 @@
 # ============================================================
 # Mini Zero Trust Ransomware Resilience System
-# Version: 0.5-alpha
+# Version: 0.7-beta
 #
 # Educational cybersecurity project demonstrating:
 # - Real-time filesystem monitoring
@@ -31,6 +31,14 @@ import sys
 import stat
 import shutil
 import os
+##===================================================== 
+# Golabal Variables
+
+# Cooldown timer to prevent alert flooding
+last_alert_time = 0
+is_restoring=False
+##===================================================== 
+
 
 
 # ============================================================
@@ -108,6 +116,29 @@ def unlock_access(folder_path):
     except Exception as e:
 
         write_log(f"[ERROR] {e}")
+#----------------------------------------------------------
+#===============================================================
+
+def restore_path():
+    global is_restoring
+
+    is_restoring = True
+   
+    write_log(f'[RECOVERY] Starting backup restoration process')
+    try:
+        os.makedirs('protected',exist_ok=True) 
+        for filename in os.listdir('backup'):
+            backup_file_path=os.path.join('backup',filename)
+            protected_file_path=os.path.join('protected',filename)
+            
+            shutil.copy2(backup_file_path,protected_file_path)
+            write_log(f'[RESTORED] {filename}')
+        write_log("[SUCCESS] Backup restoration completed")
+    except Exception as e:
+        write_log(f"[ERROR] Recovery failed: {e}")
+    is_restoring = False
+        #===============================================================
+
 
 
 # ============================================================
@@ -122,11 +153,10 @@ def unlock_access(folder_path):
 
 recent_modifications = deque()
 
-# Cooldown timer to prevent alert flooding
-last_alert_time = 0
 
 
 def backup_files(file_path):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     # Ignore non-file events
     if not os.path.isfile(file_path):
@@ -136,7 +166,7 @@ def backup_files(file_path):
 
     os.makedirs('backup', exist_ok=True)
 
-    backup_path = f'backup/{filename}'
+    backup_path = os.path.join('backup', f'{filename}_{timestamp}')
 
     # Skip unnecessary backup operations
     if os.path.exists(backup_path):
@@ -191,6 +221,8 @@ class MonitorHandler(FileSystemEventHandler):
 
 
     def on_modified(self, event):
+        if is_restoring:
+            return
 
         # Ignore directory-level events
         if event.is_directory:
@@ -281,6 +313,7 @@ except KeyboardInterrupt:
     choice=input('Enter Key: ').strip().lower()
     if choice=='mohsan':
         unlock_access(path)
+        restore_path()
 
 
 observer.join()

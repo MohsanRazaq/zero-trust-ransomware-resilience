@@ -285,3 +285,131 @@
 2026-05-16 16:04:05 [MODIFIED] protected/file1.txt
 2026-05-16 16:04:05 [MODIFIED] protected/file1.txt
 2026-05-16 16:04:05 [MODIFIED] protected/file1.txt
+2026-05-16 16:30:46 [CREATED] protected/test.txt
+2026-05-16 16:30:46 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:30:46
+2026-05-16 16:30:46 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [LOCKDOWN] Securing protected
+2026-05-16 16:31:17 [SUCCESS] protected is now protected
+2026-05-16 16:31:17 [ALERT] Suspicious mass file modification detected!
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:17 [MODIFIED] protected/test.txt
+2026-05-16 16:31:18 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:31:18
+2026-05-16 16:31:18 [MODIFIED] protected/test.txt
+2026-05-16 16:31:18 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:18 [MODIFIED] protected/file1.txt
+2026-05-16 16:31:43 [RECOVERY] Unlocking protected
+2026-05-16 16:31:43 [SUCCESS] protected unlocked
+2026-05-16 16:31:43 [RECOVERY] Starting backup restoration process
+2026-05-16 16:31:43 [RESTORED] test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:43 [RESTORED] test.txt_2026-05-16 16:30:46
+2026-05-16 16:31:43 [RESTORED] file1.txt
+2026-05-16 16:31:43 [RESTORED] file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:43 [RESTORED] test.txt_2026-05-16 16:31:18
+2026-05-16 16:31:43 [SUCCESS] Backup restoration completed
+2026-05-16 16:31:43 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:31:43
+2026-05-16 16:31:43 [MODIFIED] protected/test.txt
+2026-05-16 16:31:43 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:31:43
+2026-05-16 16:31:43 [MODIFIED] protected/file1.txt
+2026-05-16 16:31:43 [CREATED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:43 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:31:43
+2026-05-16 16:31:43 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:44 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:31:44
+2026-05-16 16:31:44 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:44 [CREATED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:31:44 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:31:44
+2026-05-16 16:31:44 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:31:44 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:31:44 [LOCKDOWN] Securing protected
+2026-05-16 16:31:44 [SUCCESS] protected is now protected
+2026-05-16 16:31:44 [ALERT] Suspicious mass file modification detected!
+2026-05-16 16:31:44 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:31:44
+2026-05-16 16:31:44 [MODIFIED] protected/file1.txt
+2026-05-16 16:31:44 [MODIFIED] protected/file1.txt
+2026-05-16 16:31:44 [CREATED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:44 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:31:44
+2026-05-16 16:31:44 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:44 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:44 [CREATED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:31:44 [BACKUP] protected/test.txt_2026-05-16 16:31:18 -> backup/test.txt_2026-05-16 16:31:18_2026-05-16 16:31:44
+2026-05-16 16:31:44 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:31:44 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:31:45 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:31:45 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:31:45 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/test.txt
+2026-05-16 16:31:45 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/file1.txt
+2026-05-16 16:31:45 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:31:45 [BACKUP] protected/test.txt_2026-05-16 16:31:18 -> backup/test.txt_2026-05-16 16:31:18_2026-05-16 16:31:45
+2026-05-16 16:31:45 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:50:10 [RECOVERY] Unlocking protected
+2026-05-16 16:50:10 [SUCCESS] protected unlocked
+2026-05-16 16:50:10 [RECOVERY] Starting backup restoration process
+2026-05-16 16:50:10 [ERROR] Recovery failed: [Errno 21] Is a directory: 'backup/docs'
+2026-05-16 16:50:10 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:50:10
+2026-05-16 16:50:10 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:50:10 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:50:10
+2026-05-16 16:50:10 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:50:10 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:50:10
+2026-05-16 16:50:10 [MODIFIED] protected/test.txt
+2026-05-16 16:50:10 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:50:10
+2026-05-16 16:50:10 [MODIFIED] protected/file1.txt
+2026-05-16 16:50:10 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:50:10
+2026-05-16 16:50:10 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:50:11 [BACKUP] protected/test.txt_2026-05-16 16:31:18 -> backup/test.txt_2026-05-16 16:31:18_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:50:11 [LOCKDOWN] Securing protected
+2026-05-16 16:50:11 [SUCCESS] protected is now protected
+2026-05-16 16:50:11 [ALERT] Suspicious mass file modification detected!
+2026-05-16 16:50:11 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:50:11 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:50:11 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/test.txt
+2026-05-16 16:50:11 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/file1.txt
+2026-05-16 16:50:11 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:50:11
+2026-05-16 16:50:11 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:50:11 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:51:10 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:51:10 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:51:10 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/test.txt
+2026-05-16 16:51:10 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/file1.txt
+2026-05-16 16:51:10 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:51:10 [BACKUP] protected/test.txt_2026-05-16 16:31:18 -> backup/test.txt_2026-05-16 16:31:18_2026-05-16 16:51:10
+2026-05-16 16:51:10 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:51:10 [LOCKDOWN] Securing protected
+2026-05-16 16:51:10 [SUCCESS] protected is now protected
+2026-05-16 16:51:10 [ALERT] Suspicious mass file modification detected!
+2026-05-16 16:51:11 [BACKUP] protected/test.txt_2026-05-16 16:31:17 -> backup/test.txt_2026-05-16 16:31:17_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/test.txt_2026-05-16 16:31:17
+2026-05-16 16:51:11 [BACKUP] protected/test.txt_2026-05-16 16:30:46 -> backup/test.txt_2026-05-16 16:30:46_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/test.txt_2026-05-16 16:30:46
+2026-05-16 16:51:11 [BACKUP] protected/test.txt -> backup/test.txt_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/test.txt
+2026-05-16 16:51:11 [BACKUP] protected/file1.txt -> backup/file1.txt_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/file1.txt
+2026-05-16 16:51:11 [BACKUP] protected/file1.txt_2026-05-16 16:31:18 -> backup/file1.txt_2026-05-16 16:31:18_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/file1.txt_2026-05-16 16:31:18
+2026-05-16 16:51:11 [BACKUP] protected/test.txt_2026-05-16 16:31:18 -> backup/test.txt_2026-05-16 16:31:18_2026-05-16 16:51:11
+2026-05-16 16:51:11 [MODIFIED] protected/test.txt_2026-05-16 16:31:18
+2026-05-16 16:52:13 [DELETED] protected/file1.txt
+2026-05-16 16:52:35 [DELETED] protected/test.txt
