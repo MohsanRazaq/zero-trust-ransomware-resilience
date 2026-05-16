@@ -2,45 +2,67 @@
 ![Status](https://img.shields.io/badge/Status-v1.0-success)
 ![Security](https://img.shields.io/badge/Focus-Ransomware%20Resilience-red)
 
-# Mini Zero Trust Ransomware Resilience System
+# Ransomware Resilience Detection System
 
 ## Overview
 
-A lightweight ransomware resilience prototype built in Python using behavioral monitoring, suspicious extension detection, automated containment, backup recovery, and incident reporting.
+A lightweight ransomware resilience prototype built in Python using behavioral monitoring,
+suspicious extension detection, automated containment, backup recovery, and incident reporting.
 
-The system monitors protected directories in real time, detects ransomware-like behavior patterns, automatically locks protected assets during suspicious activity, and supports backup restoration for recovery testing.
+The system monitors protected directories in real time, detects ransomware-like behavior
+patterns, automatically locks protected assets during suspicious activity, and supports
+backup restoration for recovery testing.
 
-This project was developed as an educational cybersecurity engineering project focused on defensive security architecture and ransomware resilience concepts.
+This project was developed as an educational cybersecurity engineering project focused on
+defensive security architecture and ransomware resilience concepts.
+
+> **Note on "Zero Trust":** This prototype implements the *least-privilege* pillar of Zero
+> Trust by setting read-only permissions (`chmod 0o444`) on protected files during lockdown.
+> Full Zero Trust architecture additionally requires identity-based access control, network
+> micro-segmentation, and continuous authentication — those are listed under
+> [Future Improvements](#future-improvements) below.
+
+---
 
 ## Features
 
 - Real-time filesystem monitoring using Watchdog
-- Behavioral ransomware activity detection
-- Suspicious extension detection (.locked, .encrypted, etc.)
+- Behavioral ransomware activity detection (sliding-window mass-modification)
+- Suspicious extension detection (`.locked`, `.encrypted`, `.crypt`, `.enc`)
 - Automated folder lockdown and containment
-- Versioned backup system
-- Backup restoration workflow
+- Versioned backup system with automatic pruning (max 3 versions per file)
+- Read-only backup protection (backups are `chmod 0o444` after write)
+- Backup restoration workflow with path-traversal protection
 - Threat report generation
 - Modular layered architecture
 - Attack simulation testing framework
 - Persistent activity logging
+- Environment-variable-based recovery key (no hardcoded credentials)
+
+---
 
 ## Architecture
 
 ```text
 [Filesystem Event]
         ↓
-[Monitor Layer]
+[Monitor Layer]        monitor.py
         ↓
-[Detection Engine]
+[Detection Engine]     detector.py
         ↓
-[Containment Engine]
+[Containment Engine]   response.py
         ↓
-[Backup & Recovery]
+[Backup & Recovery]    backup_manager.py  /  recovery.py
         ↓
-[Threat Reporting]
+[Threat Reporting]     reporter.py  /  logger.py
 ```
-The system follows a layered defensive workflow architecture. Filesystem events are collected through real-time monitoring, analyzed by behavioral and extension-based detection logic, and responded to through automated containment and recovery mechanisms. Threat reports and persistent logs are generated to support incident tracking and forensic visibility.
+
+The system follows a layered defensive workflow architecture. Filesystem events are collected
+through real-time monitoring, analyzed by behavioral and extension-based detection logic, and
+responded to through automated containment and recovery mechanisms. Threat reports and
+persistent logs are generated to support incident tracking and forensic visibility.
+
+---
 
 ## Project Structure
 
@@ -48,119 +70,114 @@ The system follows a layered defensive workflow architecture. Filesystem events 
 zero-trust-ransomware-resilience/
 │
 ├── src/
-│   ├── main.py
-│   ├── monitor.py
-│   ├── detector.py
-│   ├── response.py
-│   ├── backup_manager.py
-│   ├── recovery.py
-│   ├── reporter.py
-│   └── logger.py
+│   ├── main.py            # Entry point; coordinates monitoring and recovery
+│   ├── constants.py       # Single source of truth for all config values
+│   ├── monitor.py         # Filesystem event monitoring (Watchdog)
+│   ├── detector.py        # Behavioral and extension-based threat detection
+│   ├── response.py        # Containment and lockdown operations
+│   ├── backup_manager.py  # Versioned backup creation and pruning
+│   ├── recovery.py        # File restoration after containment
+│   ├── reporter.py        # Structured threat report generation
+│   └── logger.py          # Centralized activity logging
 │
 ├── tests/
 │   └── attack_simulator.py
 │
-├── protected/
-├── backup/
-├── logs/
+├── protected/             # Directory being monitored (gitignored)
+├── backup/                # Versioned backups (gitignored)
+├── logs/                  # Activity and threat logs (gitignored)
 │
 ├── README.md
 ├── requirements.txt
 └── .gitignore
 ```
-- `main.py` initializes the monitoring engine and coordinates system execution.
-- `monitor.py` handles filesystem event monitoring.
-- `detector.py` contains behavioral and extension-based threat detection logic.
-- `response.py` manages containment and lockdown operations.
-- `backup_manager.py` handles backup generation and versioning.
-- `recovery.py` restores protected files after containment events.
-- `reporter.py` generates incident and threat reports.
-- `logger.py` provides centralized logging functionality.
-- `attack_simulator.py` simulates ransomware-like attacks for testing purposes.
+
+---
+
 ## Installation
 
-### 1. Clone Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/MohsanRazaq/zero-trust-ransomware-resilience
 cd zero-trust-ransomware-resilience
 ```
 
-### 2. Create Virtual Environment
+### 2. Create a virtual environment
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
+
+### 4. Set your recovery key
+
+The recovery key is **not** stored in the source code. Set it as an environment variable
+before running the system:
+
+```bash
+export RECOVERY_KEY="your-strong-secret-here"
+```
+
+> Never commit this value. Add `.env` to `.gitignore` if you store it in a file.
+
+---
+
 ## Usage
 
-### Start Monitoring System
+### Start the monitoring system
 
 ```bash
 python3 src/main.py
 ```
 
-The monitoring engine will observe the `protected/` directory in real time and respond to suspicious ransomware-like behavior.
+The monitoring engine will observe the `protected/` directory in real time and respond to
+suspicious ransomware-like behavior.
 
-### Stop Monitoring & Recover Files
+### Stop monitoring and recover files
 
-Press:
+1. Press `Ctrl + C`
+2. Enter your `RECOVERY_KEY` when prompted (3 attempts allowed)
+3. The system will unlock the protected directory and restore backups automatically
 
-```text
-CTRL + C
-```
-
-Then enter:
-
-```text
-mohsan
-```
-
-to unlock protected files and restore backups.
+---
 
 ## Attack Simulation
 
-The project includes a dedicated ransomware attack simulation script for testing defensive workflows.
-
-### Run Attack Simulator
+The project includes a dedicated simulation script for testing defensive workflows.
 
 ```bash
 python3 tests/attack_simulator.py
 ```
 
-### Available Simulations
+### Available simulations
 
-#### 1. Mass Modification Attack
+**1. Mass Modification Attack**
+Simulates ransomware-like rapid file modifications to trigger behavioral detection
+and automated containment (threshold: 5 modifications in 10 seconds).
 
-Simulates ransomware-like rapid file modifications to trigger behavioral detection and automated containment.
+**2. Suspicious Extension Attack**
+Simulates ransomware-style file renaming using extensions such as `.locked`,
+`.encrypted`, `.crypt`. Triggers extension-based detection, threat reporting,
+and automated folder lockdown.
 
-#### 2. Suspicious Extension Attack
-
-Simulates ransomware-style file renaming using suspicious extensions such as:
-
-```text
-.locked
-.encrypted
-.crypt
-```
-
-This triggers extension-based threat detection, incident reporting, and automated folder lockdown.
+---
 
 ## Threat Reporting
 
-When suspicious ransomware-like activity is detected, the system automatically generates structured threat reports inside:
+When suspicious activity is detected, a structured report is appended to:
 
 ```text
 logs/threat_report.log
 ```
 
-### Example Report
+Example report:
 
 ```text
 ==================================================
@@ -171,101 +188,56 @@ Response Action    : Folder Lockdown
 ==================================================
 ```
 
-Threat reports provide:
-- incident visibility
-- attack traceability
-- forensic logging
-- containment tracking
+---
+
 ## Recovery Workflow
 
-When suspicious ransomware-like activity is detected, the system automatically switches the protected directory into a secure read-only state to prevent further file modification attempts.
+When a threat is detected, the system sets the protected directory to read-only (`0o555`)
+and individual files to `0o444` to prevent further modification.
 
-The recovery workflow includes:
+Recovery steps:
 
-- Unlocking protected assets
-- Restoring versioned backups
-- Preserving incident logs
-- Recovering protected files after containment
-
-### Recovery Process
-
-1. Stop monitoring using:
-
-```text
-CTRL + C
-```
-
-2. Enter recovery key:
-
-```text
-mohsan
-```
-
+1. Stop monitoring: `Ctrl + C`
+2. Enter recovery key at the prompt
 3. The system will:
-   - unlock the protected directory
-   - restore backup files
-   - resume normal file access
+   - unlock the protected directory (`0o755` / `0o644`)
+   - restore the latest backup of each file
+   - preserve all incident logs
 
-This workflow simulates a simplified ransomware containment and recovery lifecycle.
+---
 
-## Screenshots
+## Security Design Decisions
 
-### Monitoring Engine
+| Decision | Reason |
+|---|---|
+| Recovery key stored as env var | Prevents credentials appearing in source code or git history |
+| Key compared with `hmac.compare_digest()` | Prevents timing-based brute-force attacks |
+| 3-attempt lockout on recovery | Slows down local brute-force attempts |
+| Backups set `chmod 0o444` after write | Prevents ransomware or accidents from overwriting safety copies |
+| Max 3 backup versions per file | Caps disk usage; stops disk-fill attacks before containment triggers |
+| `os.path.basename()` on restore paths | Prevents path-traversal (e.g. `../../etc/passwd` filenames) |
+| `threading.Lock()` around deque writes | Prevents race conditions between the Watchdog thread and detection logic |
+| Single `constants.py` for all config | Eliminates duplicate `SUSPICIOUS_EXTENSIONS` lists drifting out of sync |
 
-[Monitoring](screenshots/monitoring.png)
-
-### Behavioral Detection & Containment
-
-[Behavior Detection](screenshots/behavior_detection.png)
-
-### Suspicious Extension Detection
-
-[Extension Detection](screenshots/extension_detection.png)
-
-### Threat Reporting
-
-[Threat Report](screenshots/threat_report.png)
-
-### Recovery Workflow
-
-[Recovery](screenshots/recovery.png)
-
+---
 
 ## Future Improvements
 
-When suspicious ransomware-like activity is detected, the system automatically switches the protected directory into a secure read-only state to prevent further file modification attempts.
+- [ ] Identity-based access control (MFA before unlock)
+- [ ] Network micro-segmentation integration
+- [ ] File entropy analysis for detecting in-progress encryption
+- [ ] Configurable detection thresholds via a config file
+- [ ] Process-level attribution (which PID triggered mass modifications)
+- [ ] Email / webhook alerts on lockdown events
+- [ ] Unit test coverage for detection and recovery logic
 
-The recovery workflow includes:
+---
 
-- Unlocking protected assets
-- Restoring versioned backups
-- Preserving incident logs
-- Recovering protected files after containment
-
-### Recovery Process
-
-1. Stop monitoring using:
-
-```text
-CTRL + C
-```
-
-2. Enter recovery key:
-
-```text
-mohsan
-```
-
-3. The system will:
-   - unlock the protected directory
-   - restore backup files
-   - resume normal file access
-
-This workflow simulates a simplified ransomware containment and recovery lifecycle.
 ## Disclaimer
 
 This project was developed strictly for educational and defensive cybersecurity purposes.
 
-The ransomware simulation components are designed only to demonstrate behavioral detection, containment, recovery, and resilience concepts within controlled testing environments.
+The ransomware simulation components are designed only to demonstrate behavioral detection,
+containment, recovery, and resilience concepts within controlled testing environments.
 
-Do not use this project against systems, files, or environments without proper authorization.
+Do not use this project against systems, files, or environments without explicit authorization.

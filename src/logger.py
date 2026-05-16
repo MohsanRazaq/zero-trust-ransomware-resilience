@@ -1,17 +1,16 @@
-from datetime import datetime
 import os
+from datetime import datetime
 
-def write_log(message):
+from constants import LOG_DIR
 
+
+def write_log(message: str) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
     log_message = f"{timestamp} {message}"
 
     print(log_message)
 
-    # Ensure logs directory exists before writing
-    os.makedirs("logs", exist_ok=True)
+    os.makedirs(LOG_DIR, exist_ok=True)
 
-    # Append logs instead of overwriting previous records
-    with open("logs/activity.log", 'a') as f:
+    with open(f"{LOG_DIR}/activity.log", "a") as f:
         f.write(log_message + "\n")
