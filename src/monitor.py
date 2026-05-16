@@ -1,252 +1,44 @@
-# ============================================================
-# Mini Zero Trust Ransomware Resilience System
-# Version: 0.7-beta
-#
-# Educational cybersecurity project demonstrating:
-# - Real-time filesystem monitoring
-# - Behavioral ransomware detection
-# - Automated response actions
-# - Backup resilience mechanisms
-# - Secure recovery workflows
-# ============================================================
-
-
-# -----------------------------
-# External Libraries
-# -----------------------------
-# watchdog  -> Real-time filesystem event monitoring
-# deque     -> Efficient sliding-window event storage
-# hashlib   -> Secure SHA256 hashing for authentication
-# shutil    -> File backup/copy operations
-# stat      -> Filesystem permission control
-# -----------------------------
-
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-from datetime import datetime
-from collections import deque
 import time
-import hashlib
-import sys
-import stat
-import shutil
-import os
-##===================================================== 
-# Golabal Variables
+from watchdog.events import FileSystemEventHandler
+
+from logger import write_log
+from detector import (
+    recent_modifications,
+    detect_suspicious_activity,
+    detect_suspicious_extension
+)
+from backup_manager import backup_files
+from recovery import is_restoring
 
-# Cooldown timer to prevent alert flooding
-last_alert_time = 0
-is_restoring=False
-##===================================================== 
-
-
-
-# ============================================================
-# Logging System
-# ============================================================
-# Centralized logging utility used across the project.
-#
-# Responsibilities:
-# - Timestamp all events
-# - Print live monitoring output
-# - Persist logs for forensic visibility
-# ============================================================
-
-def write_log(message):
-
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    log_message = f"{timestamp} {message}"
-
-    print(log_message)
-
-    # Ensure logs directory exists before writing
-    os.makedirs("logs", exist_ok=True)
-
-    # Append logs instead of overwriting previous records
-    with open("logs/activity.log", 'a') as f:
-        f.write(log_message + "\n")
-
-
-#==============================================================
-def lock_access(folder_path):
-
-    write_log(f"[LOCKDOWN] Securing {folder_path}")
-
-    try:
-
-        # Make folder read-only
-        os.chmod(folder_path, 0o555)
-
-        # Make every file read-only
-        for filename in os.listdir(folder_path):
-
-            file_path = os.path.join(folder_path, filename)
-
-            if os.path.isfile(file_path):
-
-                os.chmod(file_path, 0o444)
-
-        write_log(f"[SUCCESS] {folder_path} is now protected")
-
-    except Exception as e:
-
-        write_log(f"[ERROR] {e}")
-        
-
-
-def unlock_access(folder_path):
-
-    write_log(f"[RECOVERY] Unlocking {folder_path}")
-
-    try:
-
-        os.chmod(folder_path, 0o755)
-
-        for filename in os.listdir(folder_path):
-
-            file_path = os.path.join(folder_path, filename)
-
-            if os.path.isfile(file_path):
-
-                os.chmod(file_path, 0o644)
-
-        write_log(f"[SUCCESS] {folder_path} unlocked")
-
-    except Exception as e:
-
-        write_log(f"[ERROR] {e}")
-#----------------------------------------------------------
-#===============================================================
-
-def restore_path():
-    global is_restoring
-
-    is_restoring = True
-   
-    write_log(f'[RECOVERY] Starting backup restoration process')
-    try:
-        os.makedirs('protected',exist_ok=True) 
-        for filename in os.listdir('backup'):
-            backup_file_path=os.path.join('backup',filename)
-            protected_file_path=os.path.join('protected',filename)
-            
-            shutil.copy2(backup_file_path,protected_file_path)
-            write_log(f'[RESTORED] {filename}')
-        write_log("[SUCCESS] Backup restoration completed")
-    except Exception as e:
-        write_log(f"[ERROR] Recovery failed: {e}")
-    is_restoring = False
-        #===============================================================
-
-
-
-# ============================================================
-# Detection State Storage
-# ============================================================
-# deque stores recent modification timestamps.
-#
-# Purpose:
-# - Track burst file activity
-# - Support sliding-window behavioral detection
-# ============================================================
-
-recent_modifications = deque()
-
-
-
-def backup_files(file_path):
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    # Ignore non-file events
-    if not os.path.isfile(file_path):
-        return
-
-    filename = os.path.basename(file_path)
-
-    os.makedirs('backup', exist_ok=True)
-
-    backup_path = os.path.join('backup', f'{filename}_{timestamp}')
-
-    # Skip unnecessary backup operations
-    if os.path.exists(backup_path):
-
-        if os.path.getsize(file_path) == os.path.getsize(backup_path):
-            return
-
-    shutil.copy2(file_path, backup_path)
-
-    write_log(f'[BACKUP] {file_path} -> {backup_path}')
-
-
-# ============================================================
-# Behavioral Detection Engine
-# ============================================================
-# Detects ransomware-like burst activity using:
-# - modification thresholds
-# - sliding time windows
-# - alert cooldown suppression
-# ============================================================
-
-def detect_suspicious_activity(folder_path):
-
-    global last_alert_time
-
-    current_time = time.time()
-
-    while recent_modifications and current_time - recent_modifications[0] > 10:
-
-        recent_modifications.popleft()
-
-    if len(recent_modifications) > 5:
-
-        if current_time - last_alert_time > 10:
-
-            lock_access(folder_path)
-
-            write_log("[ALERT] Suspicious mass file modification detected!")
-
-            last_alert_time = current_time
-
-
-# ============================================================
-# Monitoring Agent
-# ============================================================
-# Handles filesystem events generated by watchdog.
-#
-# This acts as the project's real-time monitoring layer.
-# ============================================================
 
 class MonitorHandler(FileSystemEventHandler):
 
 
     def on_modified(self, event):
+
         if is_restoring:
             return
 
-        # Ignore directory-level events
         if event.is_directory:
             return
 
         src_path = str(event.src_path)
 
-        # Prevent recursive monitoring loops
-        if "backup" in src_path or "logs" in src_path:
+        if (
+            "backup" in src_path
+            or "logs" in src_path
+            or "_2026-" in src_path
+        ):
             return
 
-        # Small delay improves event stability
         time.sleep(0.1)
 
-        # Store modification timestamp
         recent_modifications.append(time.time())
 
-        # Create recovery backup
         backup_files(event.src_path)
 
-        # Log activity
         write_log(f"[MODIFIED] {event.src_path}")
 
-        # Run behavioral analysis
         detect_suspicious_activity('protected')
 
 
@@ -271,49 +63,8 @@ class MonitorHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        write_log(f"[MOVED] {event.src_path} to {event.dest_path}")
+        write_log(
+            f"[MOVED] {event.src_path} to {event.dest_path}"
+        )
 
-
-# ============================================================
-# Monitoring Initialization
-# ============================================================
-
-path = "protected"
-
-# Ensure protected directory exists
-os.makedirs(path, exist_ok=True)
-
-event_handler = MonitorHandler()
-
-observer = Observer()
-
-observer.schedule(event_handler, path, recursive=True)
-
-observer.start()
-
-print("Monitoring started...")
-
-
-# ============================================================
-# Main Runtime Loop
-# ============================================================
-# Keeps monitoring engine active continuously.
-# ============================================================
-
-try:
-
-    while True:
-
-        time.sleep(1)
-
-
-except KeyboardInterrupt:
-
-    print("\n[INFO] Monitoring paused by user.")
-    choice=input('Enter Key: ').strip().lower()
-    if choice=='mohsan':
-        unlock_access(path)
-        restore_path()
-
-
-observer.join()
+        detect_suspicious_extension(event.dest_path)
