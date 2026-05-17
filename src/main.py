@@ -12,12 +12,6 @@ from recovery import restore_backup
 
 
 def _get_expected_key_hash() -> str:
-    """
-    Read the recovery key from the environment and return its SHA-256 hex digest.
-    Set the environment variable before running:
-        export RECOVERY_KEY="your-secret-here"
-    Never hardcode the key in source code.
-    """
     key = os.environ.get("RECOVERY_KEY", "")
     if not key:
         raise RuntimeError(
