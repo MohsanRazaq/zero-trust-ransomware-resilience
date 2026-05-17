@@ -77,13 +77,6 @@ Administrative recovery access remained functional.
 
 ---
 
-# Packet Simulation Validation
-
-![Simulation](simulation_mode_drop.png)
-
-Simulation mode confirmed ACL-based packet filtering.
-
----
 
 # Threat Scenario
 
