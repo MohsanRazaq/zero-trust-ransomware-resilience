@@ -5,6 +5,10 @@ from logger import write_log
 
 
 def lock_access(folder_path: str) -> None:
+    """
+    Converts protected files into read-only mode
+    to contain suspected ransomware activity.
+    """
     write_log(f"[LOCKDOWN] Securing {folder_path}")
 
     try:
