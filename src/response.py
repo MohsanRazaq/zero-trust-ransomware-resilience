@@ -25,8 +25,8 @@ def lock_access(folder_path: str) -> None:
 
         write_log(f"[SUCCESS] {folder_path} is now protected")
 
-    except Exception as e:
-        write_log(f"[ERROR] lock_access failed: {e}")
+    except PermissionError:
+        write_log(f"[ERROR] lock_access failed")
 
 
 def unlock_access(folder_path: str) -> None:
