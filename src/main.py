@@ -4,7 +4,7 @@ import os
 import time
 
 from watchdog.observers import Observer
-
+from integrity_monitor import IntegrityHandler
 from constants import PROTECTED_DIR
 from monitor import MonitorHandler
 from response import unlock_access
@@ -37,7 +37,21 @@ def main() -> None:
 
     event_handler = MonitorHandler()
     observer = Observer()
-    observer.schedule(event_handler, PROTECTED_DIR, recursive=True)
+
+    integrity_handler = IntegrityHandler()
+
+    observer.schedule(
+    integrity_handler,
+    PROTECTED_DIR,
+    recursive=True
+)
+    
+    observer.schedule(
+    event_handler,
+    PROTECTED_DIR,
+    recursive=True
+)
+    
     observer.start()
 
     print("Monitoring started...")
