@@ -149,21 +149,22 @@ This separation helped me better understand:
 
 # Hardest Problem I Solved
 
-The hardest challenge was designing the containment and recovery workflow safely.
+The hardest challenge was handling race conditions caused by concurrent filesystem events.
 
-Initially, I only locked the top-level protected directory. Later I discovered nested folders could still create traversal and permission issues during recovery operations.
+The monitoring system receives rapid file modification events asynchronously through Watchdog threads. During ransomware-style simulations, multiple events could trigger almost simultaneously, causing shared detection state to become inconsistent.
 
-Another difficult issue was balancing:
+This created issues such as:
 
-* automated lockdown
-  vs
-* safe recovery access
+* duplicate detection events
+* corrupted modification counters
+* inconsistent sliding-window analysis
+* unpredictable containment behavior
 
-I learned that filesystem permissions are much more complex operationally than they first appear, especially when recursive traversal and restoration workflows are involved.
+To stabilize the detection pipeline, I introduced thread synchronization using `threading.Lock()` around shared event structures.
 
-I also struggled with telemetry consistency while tracking integrity events and backup versions across multiple file operations.
+This taught me an important engineering lesson:
+real-time defensive systems are not just about detection logic  they also require safe concurrency handling and reliable state management under high event activity.
 
----
 
 # What Surprised Me Most
 
