@@ -1,6 +1,6 @@
 import threading
-import time
-from collections import deque
+import time, math
+from collections import deque , Counter
 
 from constants import (
     SUSPICIOUS_EXTENSIONS,
@@ -18,7 +18,20 @@ _lock = threading.Lock()
 is_locked = False
 
 
-def detect_suspicious_activity(folder_path):
+def check_entropy_threashold(file_path):
+    
+    with open (file_path,'rb',errors='ignore')as f:
+        data=f.read()
+        count_frequency=Counter(data)
+    entropy_total=0
+    for byte in count_frequency.values():
+        probability=byte/len(data)
+        if probability>0:    
+            entropy_total+=probability*math.log2(probability)
+    entropy=-(entropy_total)    
+    return entropy
+
+def detect_suspicious_activity(folder_path,entropy):
     global last_alert_time, is_locked
 
     current_time = time.time()
@@ -27,7 +40,7 @@ def detect_suspicious_activity(folder_path):
         while recent_modifications and current_time - recent_modifications[0] > DETECTION_WINDOW_SECONDS:
             recent_modifications.popleft()
 
-        if len(recent_modifications) > DETECTION_THRESHOLD:
+        if len(recent_modifications) > DETECTION_THRESHOLD and entropy>7.5:
             if current_time - last_alert_time > ALERT_COOLDOWN_SECONDS:
                 is_locked = True
                 lock_access(folder_path)

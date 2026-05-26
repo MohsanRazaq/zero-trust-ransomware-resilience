@@ -7,7 +7,7 @@ from backup_manager import backup_files
 from constants import BACKUP_DIR, LOG_DIR
 from logger import write_log
 from recovery import is_restoring
-
+from detector import check_entropy_threashold
 
 class MonitorHandler(FileSystemEventHandler):
 
@@ -32,10 +32,12 @@ class MonitorHandler(FileSystemEventHandler):
 
         with detector._lock:
             detector.recent_modifications.append(time.time())
+        score=check_entropy_threashold(src_path)
+    
 
         backup_files(src_path)
-        write_log(f"[MODIFIED] {src_path}")
-        detector.detect_suspicious_activity("protected")
+        write_log(f"[MODIFIED] {src_path} (Entropy: {score:.2f})")
+        detector.detect_suspicious_activity("protected", score)
 
     def on_created(self, event):
         if event.is_directory:
