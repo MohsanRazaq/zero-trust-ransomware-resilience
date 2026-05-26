@@ -19,7 +19,7 @@ is_locked = False
 
 
 def check_entropy_threashold(file_path):
-    with open (file_path,'rb',errors='ignore')as f:
+    with open (file_path,'rb')as f:
         data=f.read()
         count_frequency=Counter(data)
     entropy_total=0
