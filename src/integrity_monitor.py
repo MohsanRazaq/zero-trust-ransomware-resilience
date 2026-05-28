@@ -48,12 +48,6 @@ class IntegrityHandler(FileSystemEventHandler):
                 f'New Hash: {new_hash}'
             )
 
-            print(
-                f'[{event_type}] {src}\n'
-                f'Old Hash: {old_hash}\n'
-                f'New Hash: {new_hash}'
-            )
-
             # Update known file state
             tracked_hashes[src] = new_hash
 
