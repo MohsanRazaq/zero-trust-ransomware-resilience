@@ -39,9 +39,31 @@ def check_entropy_threashold(file_path):
             entropy_total += probability * math.log2(probability)
     return -(entropy_total)
 
+
 def detect_suspicious_activity(folder_path, entropy):
-    # Bring all variables to be modified into global scope safely
+    
     global THREAT_SCORE, last_alert_time, is_locked
+    if is_honeytoken_breached(folder_path):
+        with _lock:
+            THREAT_SCORE=150
+            is_locked=True
+            write_log(f"[CRITICAL] HONEYTOKEN TRAP BREACHED AT: {folder_path}! Instant isolation triggered.")
+            lock_access(folder_path)
+            
+            
+        generate_threat_report(
+                "Deception Trap Honeytoken Breach",
+                folder_path,
+                "Instant Automated Folder Lockdown",
+                entropy,
+                1,
+                THREAT_SCORE
+            )
+        return
+    
+    
+    #--------------------------------------------------------------------------------------
+        # Bring all variables to be modified into global scope safely
 
     current_time = time.time()
 
