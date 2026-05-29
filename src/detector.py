@@ -1,8 +1,10 @@
+from src.integrity_monitor import get_score
+from src.constants import BACKUP_DIR, LOG_DIR
+from src.logger import write_log
+
 import threading
 import time, math
 from collections import deque , Counter
-from integrity_monitor import get_score
-from deception import is_honeytoken_breached
 from constants import (
     SUSPICIOUS_EXTENSIONS,
     DETECTION_WINDOW_SECONDS,
@@ -10,7 +12,6 @@ from constants import (
     ENTROPY_SCORE_THREASHOLD,
     ALERT_COOLDOWN_SECONDS
 )
-from logger import write_log
 from reporter import generate_threat_report
 from response import lock_access
 
