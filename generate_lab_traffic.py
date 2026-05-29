@@ -14,25 +14,25 @@ def generate_high_entropy_bytes(length):
     return os.urandom(length)
 
 def simulate_normal_user(num_files=30):
-    print(f"[🌱 LAB] Simulating {num_files} normal user activities...")
+    print(f"[ LAB] Simulating {num_files} normal user activities...")
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
     for i in range(num_files):
         file_path = TARGET_DIR / f"user_doc_{i}.txt"
         with open(file_path, "w") as f:
             f.write(f"Log event sequence index {i}. " + generate_random_string(100))
-        print(f"[🌱 LAB] Created normal document: {file_path}")
+        print(f"[ LAB] Created normal document: {file_path}")
         time.sleep(0.1)
 
 def simulate_attack_traffic(num_files=30):
-    print(f"\n[💥 LAB] Simulating rapid, high-entropy attack sweep across {num_files} files...")
+    print(f"\n[ LAB] Simulating rapid, high-entropy attack sweep across {num_files} files...")
     for i in range(num_files):
         file_path = TARGET_DIR / f"encrypted_payload_{i}.locked"
         try:
             with open(file_path, "wb") as f:
                 f.write(generate_high_entropy_bytes(512))
-            print(f"[💥 LAB] Mass modification signature dropped: {file_path}")
+            print(f"[LAB] Mass modification signature dropped: {file_path}")
         except PermissionError:
-            print(f"[🛡️ SYSTEM DEFENSE] ACCESS DENIED! The file system locked down successfully.")
+            print(f"[ SYSTEM DEFENSE] ACCESS DENIED! The file system locked down successfully.")
             break
         time.sleep(0.01)
 
