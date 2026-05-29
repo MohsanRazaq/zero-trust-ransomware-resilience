@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from constants import LOG_DIR
+from src.constants import LOG_DIR
 
 
 def write_log(message: str) -> None:

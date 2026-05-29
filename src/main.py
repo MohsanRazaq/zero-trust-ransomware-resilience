@@ -4,12 +4,10 @@ import os
 import time
 
 from watchdog.observers import Observer
-from integrity_monitor import IntegrityHandler
-from constants import PROTECTED_DIR
-from monitor import MonitorHandler
-from response import unlock_access
-from recovery import restore_backup
-
+from src.integrity_monitor import IntegrityHandler
+from src.monitor import MonitorHandler
+from src.constants import PROTECTED_DIR
+from src.response import unlock_access
 
 def _get_expected_key_hash() -> str:
     key = os.environ.get("RECOVERY_KEY", "")
@@ -20,7 +18,6 @@ def _get_expected_key_hash() -> str:
         )
     return hashlib.sha256(key.encode()).hexdigest()
 
-
 def _verify_key(user_input: str, expected_hash: str) -> bool:
     """
     Compare the user-supplied key against the stored hash using a
@@ -29,31 +26,21 @@ def _verify_key(user_input: str, expected_hash: str) -> bool:
     input_hash = hashlib.sha256(user_input.encode()).hexdigest()
     return hmac.compare_digest(input_hash, expected_hash)
 
-
 def main() -> None:
     expected_hash = _get_expected_key_hash()
 
     os.makedirs(PROTECTED_DIR, exist_ok=True)
 
     event_handler = MonitorHandler()
+    integrity_handler = IntegrityHandler()
+    
     observer = Observer()
 
-    integrity_handler = IntegrityHandler()
-
-    observer.schedule(
-    integrity_handler,
-    PROTECTED_DIR,
-    recursive=True
-)
-    
-    observer.schedule(
-    event_handler,
-    PROTECTED_DIR,
-    recursive=True
-)
+    # Schedule both integrity tracking and behavioral ML monitoring
+    observer.schedule(integrity_handler, PROTECTED_DIR, recursive=True)
+    observer.schedule(event_handler, PROTECTED_DIR, recursive=True)
     
     observer.start()
-
     print("Monitoring started...")
 
     try:
@@ -72,7 +59,6 @@ def main() -> None:
 
             if _verify_key(key_input, expected_hash):
                 unlock_access(PROTECTED_DIR)
-                restore_backup()
                 break
             else:
                 remaining = max_attempts - attempts
@@ -84,7 +70,6 @@ def main() -> None:
     finally:
         observer.stop()
         observer.join()
-
 
 if __name__ == "__main__":
     main()
