@@ -1,6 +1,5 @@
 import hashlib
 from pathlib import Path
-
 from watchdog.events import FileSystemEventHandler
 
 from logger import write_log
@@ -8,7 +7,7 @@ from logger import write_log
 
 # Stores last known hash state of monitored files
 tracked_hashes = {}
-
+THREAT_SCORE=0
 
 def get_hash(filepath):
     """
@@ -24,7 +23,8 @@ def get_hash(filepath):
     except (FileNotFoundError, PermissionError):
         return None
 
-
+def get_score(score:int)->int:
+    return score
 class IntegrityHandler(FileSystemEventHandler):
 
     def process_hash_change(self, src: str, event_type: str) -> None:
@@ -42,6 +42,7 @@ class IntegrityHandler(FileSystemEventHandler):
         # Detect actual content modification
         if new_hash != old_hash:
 
+            get_score(20)
             write_log(
                 f'[{event_type}] {src}\n'
                 f'Old Hash: {old_hash}\n'
@@ -83,6 +84,7 @@ class IntegrityHandler(FileSystemEventHandler):
         write_log(f'[DELETED] {src}')
         print(f'[DELETED] {src}')
 
+        get_score(20)
         # Remove deleted file from tracked state
         tracked_hashes.pop(src, None)
 
@@ -100,6 +102,7 @@ class IntegrityHandler(FileSystemEventHandler):
         # Get current hash from new location
         new_hash = get_hash(dest)
 
+        get_score(20)
         write_log(
             f'[MOVED] {src} -> {dest}\n'
             f'Old Hash: {old_hash}\n'

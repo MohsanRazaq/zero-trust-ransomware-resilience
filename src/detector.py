@@ -1,12 +1,13 @@
 import threading
 import time, math
 from collections import deque , Counter
-
+from integrity_monitor import get_score
 from constants import (
     SUSPICIOUS_EXTENSIONS,
     DETECTION_WINDOW_SECONDS,
     DETECTION_THRESHOLD,
-    ALERT_COOLDOWN_SECONDS,
+    ENTROPY_SCORE_THREASHOLD,
+    ALERT_COOLDOWN_SECONDS
 )
 from logger import write_log
 from reporter import generate_threat_report
@@ -17,60 +18,87 @@ last_alert_time = 0.0
 _lock = threading.Lock()
 is_locked = False
 
+# Establish the baseline metric score from integrity monitor
+INITIAL_INTEGRITY_SCORE = get_score(20)  
+THREAT_SCORE = INITIAL_INTEGRITY_SCORE
 
 def check_entropy_threashold(file_path):
-    with open (file_path,'rb')as f:
-        data=f.read()
-        count_frequency=Counter(data)
-    entropy_total=0
+    with open(file_path, 'rb') as f:
+        data = f.read()
+        count_frequency = Counter(data)
+    
+    if not data:
+        return 0.0
+        
+    entropy_total = 0
     for byte in count_frequency.values():
-        probability=byte/len(data)
-        if probability>0:    
-            entropy_total+=probability*math.log2(probability)
-    entropy=-(entropy_total)    
-    return entropy
+        probability = byte / len(data)
+        if probability > 0:    
+            entropy_total += probability * math.log2(probability)
+    return -(entropy_total)
 
 def detect_suspicious_activity(folder_path, entropy):
-    global last_alert_time, is_locked
+    # Bring all variables to be modified into global scope safely
+    global THREAT_SCORE, last_alert_time, is_locked
 
     current_time = time.time()
 
+    # Keep all read/write state checks inside the Mutex Lock to avoid Race Conditions
     with _lock:
+        # 1. Prune stale timestamps outside the  tracking timeline window
         while recent_modifications and current_time - recent_modifications[0] > DETECTION_WINDOW_SECONDS:
             recent_modifications.popleft()
 
-        if len(recent_modifications) > DETECTION_THRESHOLD and entropy > 7.5:
+        # 2. Local State Risk Accumulator Evaluation (Reset baseline each evaluation loop)
+        current_event_risk = INITIAL_INTEGRITY_SCORE
+        
+        if entropy > ENTROPY_SCORE_THREASHOLD:
+            current_event_risk += 40 
+            
+        if len(recent_modifications) > DETECTION_THRESHOLD:
+            current_event_risk += 30
+
+        THREAT_SCORE = current_event_risk
+
+        # 3. Mitigation Execution Strategy Check
+        if THREAT_SCORE > 50:    
             if current_time - last_alert_time > ALERT_COOLDOWN_SECONDS:
                 is_locked = True
                 lock_access(folder_path)
-                
+            
                 velocity = len(recent_modifications)
-                write_log(f"[ALERT] Suspicious mass file modification detected! Entropy: {entropy:.2f}")
+                write_log(f"[ALERT] Security Engine Active Isolation! Entropy: {entropy:.2f} Calculated Risk Score: {THREAT_SCORE:.2f}")
                 
-                # Updated to pass the entropy score and velocity count
                 generate_threat_report(
                     "Mass File Modification",
                     folder_path,
                     "Folder Lockdown",
                     entropy,
-                    velocity
+                    velocity,
+                    THREAT_SCORE
                 )
                 last_alert_time = current_time
-
+        else:
+            # Slow metric decay loop if baseline activity is normal
+            if THREAT_SCORE > INITIAL_INTEGRITY_SCORE:
+                THREAT_SCORE -= 5
 
 def detect_suspicious_extension(file_path):
-    global is_locked
+    global THREAT_SCORE, is_locked
     for extension in SUSPICIOUS_EXTENSIONS:
         if file_path.endswith(extension):
-            write_log(f"[ALERT] Suspicious extension detected: {file_path}")
+            with _lock:
+                THREAT_SCORE += 100
             
-            # Updated to pass baseline values (0.0 entropy, 1 file event velocity)
+            write_log(f"[ALERT] Suspicious extension signature match: {file_path}")
+            
             generate_threat_report(
                 "Suspicious Extension Detection",
                 file_path,
                 "Folder Lockdown",
                 0.0,
-                1
+                1,
+                THREAT_SCORE
             )
             time.sleep(0.5)
             is_locked = True
@@ -78,7 +106,8 @@ def detect_suspicious_extension(file_path):
             return True
     return False
 
-
 def reset_locked_state():
-    global is_locked
+    global is_locked, THREAT_SCORE
     is_locked = False
+    with _lock:
+        THREAT_SCORE = INITIAL_INTEGRITY_SCORE

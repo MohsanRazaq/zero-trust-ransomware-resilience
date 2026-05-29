@@ -9,7 +9,8 @@ def generate_threat_report(
     affected_path: str,
     response_action: str,
     entropy: float,
-    velocity: int
+    velocity: int,
+    THREAT_SCORE:int
 ) -> None:
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     os.makedirs(LOG_DIR, exist_ok=True)
@@ -20,7 +21,7 @@ Incident Timestamp : {timestamp}
 Attack Type        : {attack_type}
 Affected Path      : {affected_path}
 Response Action    : {response_action}
-
+THREAT_SCORE       : {THREAT_SCORE}
 FORENSIC ANALYTICS:
 --------------------------------------------------
 Peak Shannon Entropy : {entropy:.2f} / 8.00
