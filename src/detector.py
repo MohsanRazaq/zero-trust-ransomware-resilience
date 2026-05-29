@@ -1,6 +1,6 @@
-from src.integrity_monitor import get_score
-from src.constants import BACKUP_DIR, LOG_DIR
-from src.logger import write_log
+from integrity_monitor import get_score
+from constants import BACKUP_DIR, LOG_DIR
+from logger import write_log
 
 import threading
 import time, math

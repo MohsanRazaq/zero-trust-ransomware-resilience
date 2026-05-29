@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 import joblib
 
-print("[⚙️ ML] Automatically building dataset matrix...")
+print("[ML] Automatically building dataset matrix...")
 np.random.seed(42)
 num_samples = 1000
 
@@ -23,18 +23,18 @@ df_att = pd.DataFrame({'velocity': attack_v, 'entropy': attack_e, 'is_malicious'
 df = pd.concat([df_norm, df_att], ignore_index=True).sample(frac=1).reset_index(drop=True)
 
 df.to_csv('dataset.csv', index=False)
-print("[⚙️ ML] dataset.csv successfully updated with 2000 balanced records.")
+print("[ML] dataset.csv successfully updated with 2000 balanced records.")
 
 X = df[['velocity', 'entropy']]
 y = df['is_malicious']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-print("[⚙️ ML] Training Random Forest Classifier engine...")
+print(" ML] Training Random Forest Classifier engine...")
 model = RandomForestClassifier(n_estimators=50, max_depth=5, random_state=42)
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
-print(f"\n[📊 QUALITY ASSURANCE EVALUATION]\nModel Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
+print(f"\n[ QUALITY ASSURANCE EVALUATION]\nModel Accuracy: {accuracy_score(y_test, y_pred) * 100:.2f}%")
 print(classification_report(y_test, y_pred))
 
 joblib.dump(model, 'ransomware_model.pkl')

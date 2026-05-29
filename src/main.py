@@ -4,10 +4,10 @@ import os
 import time
 
 from watchdog.observers import Observer
-from src.integrity_monitor import IntegrityHandler
-from src.monitor import MonitorHandler
-from src.constants import PROTECTED_DIR
-from src.response import unlock_access
+from integrity_monitor import IntegrityHandler
+from monitor import MonitorHandler
+from constants import PROTECTED_DIR
+from response import unlock_access
 
 def _get_expected_key_hash() -> str:
     key = os.environ.get("RECOVERY_KEY", "")

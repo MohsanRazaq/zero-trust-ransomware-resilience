@@ -2,12 +2,12 @@ import time
 from watchdog.events import FileSystemEventHandler
 
 import detector
-from src.reporter import generate_threat_report
-from src.backup_manager import backup_files
-from src.constants import BACKUP_DIR, LOG_DIR
-from src.logger import write_log
-from src.recovery import is_restoring
-from src.detector import check_entropy_threashold
+from reporter import generate_threat_report
+from backup_manager import backup_files
+from constants import BACKUP_DIR, LOG_DIR
+from logger import write_log
+from recovery import is_restoring
+from detector import check_entropy_threashold
 class MonitorHandler(FileSystemEventHandler):
 
     def on_modified(self, event):
@@ -24,7 +24,6 @@ class MonitorHandler(FileSystemEventHandler):
         if any(d in src_path for d in (BACKUP_DIR, LOG_DIR, "_2026-")):
             return
 
-        # Regular user activity delay buffer for standard files only
         time.sleep(0.1)
 
         try:
@@ -38,8 +37,6 @@ class MonitorHandler(FileSystemEventHandler):
             # Fetch features for ML model query
             velocity = len(detector.recent_modifications)
             
-            # =========================================================================
-            # 🧠 LIVE MACHINE LEARNING INFERENCE INTERCEPTOR
             # =========================================================================
             from ml_detector import predict_malicious_intent
             

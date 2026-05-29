@@ -1,8 +1,8 @@
 import hashlib
 from pathlib import Path
 from watchdog.events import FileSystemEventHandler
-from src.constants import BACKUP_DIR, LOG_DIR
-from src.logger import write_log
+from constants import BACKUP_DIR, LOG_DIR
+from logger import write_log
 
 # Stores last known hash state of monitored files
 tracked_hashes = {}

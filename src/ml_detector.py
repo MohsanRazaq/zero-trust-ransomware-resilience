@@ -1,7 +1,7 @@
 import pandas as pd
 import joblib
 from pathlib import Path
-from src.logger import write_log
+from logger import write_log
 
 # Point directly to the compiled serialized brain asset in your root folder
 MODEL_PATH = Path(__file__).resolve().parent.parent / "ransomware_model.pkl"
@@ -32,7 +32,7 @@ def predict_malicious_intent(velocity, entropy):
         
     if model is not None:
         try:
-            # ◄— Convert the raw 2D list into a structured DataFrame with correct headers
+           
             live_features = pd.DataFrame(
                 [[velocity, entropy]], 
                 columns=['velocity', 'entropy']
